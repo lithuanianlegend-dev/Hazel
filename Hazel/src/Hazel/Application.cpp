@@ -1,6 +1,7 @@
+#include <hzpch.h>
 #include "Application.h"
 
-#include "Hazel/Events/ApplicationEvent.h"
+#include "Hazel/Events/KeyEvent.h"
 #include "Hazel/Log.h"
 
 namespace Hazel
@@ -17,12 +18,6 @@ namespace Hazel
 
 	void Application::Run()
 	{
-		WindowResizeEvent e(1280, 720);
-		HZ_TRACE(e.ToString());
-		if (e.IsInCategory(EventCategoryApplication))
-		{
-			HZ_FATAL("EVENT IS, INFACT, AN APPLICATION EVENT.");
-		}
 
 		while (true);
 	}
