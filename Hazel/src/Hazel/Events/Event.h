@@ -1,6 +1,13 @@
 #pragma once
 
+#include <string>
+#include <functional>
+
+#include "Hazel/Events/Event.h"
 #include "../Core.h"
+
+#include <spdlog/spdlog.h>
+#include <sstream>
 
 namespace Hazel {
 
@@ -47,8 +54,8 @@ namespace Hazel {
 		{
 			return GetCategoryFlags() & category;
 		}
-	protected:
-		bool m_Handled = false;
+	public:
+		bool Handled = false;
 	};
 
 	class EventDispatcher
@@ -58,7 +65,7 @@ namespace Hazel {
 	public:
 		EventDispatcher(Event& event)
 			: m_Event(event)
-		{
+		{	
 		}
 
 		template<typename T>
@@ -66,7 +73,7 @@ namespace Hazel {
 		{
 			if (m_Event.GetEventType() == T::GetStaticType())
 			{
-				m_Event.m_Handled = func(*(T*)&m_Event);
+				m_Event.Handled = func(static_cast<T&>(m_Event));
 				return true;
 			}
 			return false;
@@ -79,4 +86,20 @@ namespace Hazel {
 	{
 		return os << e.ToString();
 	}
+
+}
+
+// Formating
+template<typename T>
+struct fmt::formatter<
+	T, std::enable_if_t<std::is_base_of<Hazel::Event, T>::value, char>>
+	: fmt::formatter<std::string> {
+	auto format(const T& event, fmt::format_context& ctx) const {
+		return fmt::format_to(ctx.out(), "{}", event.ToString());
+	}
+};
+
+template <typename... T>
+std::string StringFromArgs(fmt::format_string<T...> fmt, T&&... args) {
+	return fmt::format(fmt, std::forward<T>(args)...);
 }
