@@ -5,3 +5,9 @@ bin-int/
 
 # Files
 *.user
+
+# Keep GLFW vendor files
+!Hazel/
+!Hazel/vendor/
+!Hazel/vendor/GLFW/
+!Hazel/vendor/GLFW/**
