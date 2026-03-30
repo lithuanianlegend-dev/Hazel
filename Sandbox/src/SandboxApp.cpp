@@ -13,7 +13,6 @@ public:
 	
 	}
 
-
 };
 
 Hazel::Application* Hazel::CreateApplication()
