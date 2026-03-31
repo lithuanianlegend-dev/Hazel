@@ -2,6 +2,7 @@
 
 #include "Hazel/Window.h"
 
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 namespace Hazel {
@@ -21,6 +22,7 @@ namespace Hazel {
 		inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
+		void* GetNativeWindow() const override { return m_Window; }
 	private:
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
@@ -33,7 +35,7 @@ namespace Hazel {
 			unsigned int Width, Height;
 			bool VSync;
 
-			EventCallbackFn EventCallback;
+			EventCallbackFn EventCallback = nullptr;
 		};
 
 		WindowData m_Data;
